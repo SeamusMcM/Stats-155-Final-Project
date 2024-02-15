@@ -1,0 +1,22 @@
+---
+title: "Stats 155 Final Project"
+author: "Inbal Armony"
+date: "2024-02-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyr)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+# Loading the data
+```{r}
+waterdata <- read_tsv('water_use')
+uvdata <- read_tsv('uv')
+```
+
+
