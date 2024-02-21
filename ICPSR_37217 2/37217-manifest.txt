@@ -1,0 +1,48 @@
+File Manifest for ICPSR 37217
+
+Michigan. Department of Environmental Quality. PFAS Results in Community
+Water Supplies (CWS) in Michigan, 2018. ICPSR37217-v1.  [distributor],
+2019-01-04. http://doi.org/10.3886/ICPSR37217.v1
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37217-descriptioncitation.pdf       -       -         -       2019-01-07  -
+
+    37217-manifest.txt                  -       -         -       daily       -
+
+
+DS0001 PFAS Results in Community Water Supplies (CWS) in Michigan, 2018
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37217-0001-Codebook.pdf             -       -         -       2019-01-04  ed8a26acf8f86d07887c9ba9dfe70050
+
+    37217-0001-Data.dta                 -       1,099     10      2019-01-04  0550affc83a23b7d4f913c27aa3fa18c
+
+    37217-0001-Data.rda                 -       1,099     10      2019-01-04  930971a0d369c8d95bbca685fd1349d4
+
+    37217-0001-Data.sav                 -       1,099     10      2019-01-04  cc0fc59ecdfc3027a7da4999eeb72895
+
+    37217-0001-Data.stc                 -       1,099     10      2019-01-04  0e15e73d628d250a1dea6d8f2b579edc
+
+    37217-0001-Data.tsv                 -       1,099     10      2019-01-04  272df2bb8c5da45f01fe5815f109881f
+
+    37217-0001-Data.txt                 186     1,099     10      2019-01-04  8d9e270d6003ca5ce8d66291473d2876
+
+    37217-0001-Setup.dct                -       -         -       2019-01-04  5b26de0c612e2890654c666c9f6b157a
+
+    37217-0001-Setup.do                 -       -         -       2019-01-04  5e92b6a18233a6e6b65f0863027f1c11
+
+    37217-0001-Setup.sas                -       -         -       2019-01-04  c21109af12fb2968b873ba96ed4c3a81
+
+    37217-0001-Setup.sps                -       -         -       2019-01-04  08838efb9868c97a354d49b66fee5f0d
+
+    37217-0001-Supplemental_syntax.do   -       -         -       2019-01-04  29fe5dca079e47e925ee0f53480356fe
+
+    37217-0001-Supplemental_syntax.sas  -       -         -       2019-01-04  8679e3e1ac4b044294e19d7c4ed48a5c
+
