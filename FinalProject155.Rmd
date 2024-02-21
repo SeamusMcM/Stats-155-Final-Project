@@ -15,8 +15,30 @@ library(ggplot2)
 
 # Loading the data
 ```{r}
-waterdata <- read_tsv('water_use')
-uvdata <- read_tsv('uv')
+Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 ```
+
+# Exploring  + cleaning the data
+```{r}
+head(Water_Data)
+
+Water_Data <- Water_Data %>% 
+  # changing not detected to 0!
+  #mutate(TOTAL_TESTED_PFAS_PPT = ifelse(TOTAL_TESTED_PFAS_PPT == 'ND', 0)) 
+  # mutate(TOTAL_TESTED_PFAS_PPT = replace(TOTAL_TESTED_PFAS_PPT, 'ND', 0)) 
+  mutate(TOTAL_TESTED_PFAS_PPT = factor(TOTAL_TESTED_PFAS_PPT)) %>% 
+  mutate(TOTAL_TESTED_PFAS_PPT = fct_recode(TOTAL_TESTED_PFAS_PPT, '0' = 'ND')) %>% 
+  #mutate(TOTAL_TESTED_PFAS_PPT = as.numeric(TOTAL_TESTED_PFAS_PPT)) %>% 
+  mutate(PFOA_PFOS_PPT = factor(PFOA_PFOS_PPT)) %>% 
+  mutate(PFOA_PFOS_PPT = fct_recode(PFOA_PFOS_PPT, '0' = 'ND')) 
+# %>% mutate(PFOA_PFOS_PPT = as.numeric(PFOA_PFOS_PPT))
+
+
+Water_Data %>% 
+  summarize(mean(TOTAL_TESTED_PFAS_PPT))
+
+
+```
+
 
 
