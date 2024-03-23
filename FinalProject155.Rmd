@@ -18,7 +18,7 @@ library(stringr)
 ```{r}
 Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
 
-# Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
+Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 
 Water_Data <- read_tsv('\Users\bengr\OneDrive\Documents\GitHub\Stats-155-Final-Project')
 
@@ -53,6 +53,38 @@ Top10 %>%
 
 ```
 
+
+```{r plots}
+
+# fix, only doing PFAS
+Top10 %>% 
+  ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
+  geom_boxplot() +
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
+
+Top10 %>% 
+  filter(!COUNTY == "KALAMAZOO") %>% 
+  ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
+  geom_boxplot() +
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
+
+Top10 %>% 
+  filter(COUNTY == "KALAMAZOO") %>% 
+  ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
+  geom_boxplot() +
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
+
+Top10 %>% 
+  mutate(PFAS_YES=ifelse(TOTAL_TESTED_PFAS_PPT>0, TRUE, FALSE)) %>% 
+  ggplot(aes(x=reorder(COUNTY, -PFAS_YES), fill=PFAS_YES)) +
+  geom_bar(position='fill') +
+  labs(title="Presence of PFAS Contaminated Water in the Ten Most Tested Michigan Counties", fill="Presence of PFAS in Tested Water", x="County")
+
+
+Top10 %>% 
+  filter(COUNTY == "KALAMAZOO")
+
+```
 
 
 
