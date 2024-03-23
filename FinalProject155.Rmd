@@ -11,31 +11,45 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(stringr)
 ```
 
 # Loading the data
 ```{r}
 Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
+
+Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
+
 # Water_Data <- read_tsv('https://github.com/SeamusMcM/Stats-155-Final-Project/blob/e24710482babfe81c78ae92cb6dea75a6bde35dc/37217-0001-Data.tsv')
 ```
 
 # Exploring  + cleaning the data
 ```{r}
 head(Water_Data)
-library(stringr)
 
-Water_Data <- Water_Data %>% 
+Water_Data_New <- Water_Data %>% 
   # changing not detected to 0!
   mutate(TOTAL_TESTED_PFAS_PPT = ifelse(TOTAL_TESTED_PFAS_PPT == 'ND', 0,TOTAL_TESTED_PFAS_PPT)) %>% 
-  mutate(PFOA_PFOS_PPT = ifelse(PFOA_PFOS_PPT == 'ND', 0,PFOA_PFOS_PPT))
-
-Water_Data %>% 
+  mutate(PFOA_PFOS_PPT = ifelse(PFOA_PFOS_PPT == 'ND', 0,PFOA_PFOS_PPT)) %>% 
   mutate(TOTAL_TESTED_PFAS_PPT = str_replace(TOTAL_TESTED_PFAS_PPT, ",","")) %>%
-  mutate(TOTAL_TESTED_PFAS_PPT = as.numeric(TOTAL_TESTED_PFAS_PPT)) %>%
-  summarize(mean(TOTAL_TESTED_PFAS_PPT))
+  mutate(TOTAL_TESTED_PFAS_PPT = as.numeric(TOTAL_TESTED_PFAS_PPT)) 
+  
+  
+Water_Data_New %>%  summarize(mean(TOTAL_TESTED_PFAS_PPT))
 
+
+# New data set with just the top 10 counties (based off of number of test sites) 
+Top10 <- Water_Data_New %>% 
+  group_by(COUNTY) %>% 
+  summarize(num_sites = n()) %>% 
+  arrange(desc(num_sites)) %>% 
+  head(10) %>% 
+  left_join(Water_Data_New)
 
 ```
+
+
+
 
 
 
