@@ -20,6 +20,8 @@ Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Pers
 
 # Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 
+Water_Data <- read_tsv('\Users\bengr\OneDrive\Documents\GitHub\Stats-155-Final-Project')
+
 # Water_Data <- read_tsv('https://github.com/SeamusMcM/Stats-155-Final-Project/blob/e24710482babfe81c78ae92cb6dea75a6bde35dc/37217-0001-Data.tsv')
 ```
 
