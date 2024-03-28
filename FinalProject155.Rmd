@@ -103,7 +103,7 @@ Top10 %>%
 
 
 Top10 %>% 
-  filter(!COUNTY == "KALAMAZOO")
+  filter(COUNTY == "KALAMAZOO")
 
 #Not sure if this is exactly what we're looking for, can adjust if needed.
 Top10 %>%
