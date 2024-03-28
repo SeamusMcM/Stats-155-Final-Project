@@ -18,7 +18,7 @@ library(stringr)
 ```{r}
 Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
 
-Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
+# Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 
 # Water_Data <- read_tsv('/Users/bengr/OneDrive/Documents/GitHub/Stats-155-Final-Project')
 
@@ -62,14 +62,21 @@ Top10 %>%
             sd = sd(POPULATION_SERVED),
             median = median(POPULATION_SERVED),
             max = max(POPULATION_SERVED))
+# NOT GOOD
 Top10 %>%
 # one in oakland is "_" I think that 46% is raw and 53% is treated
   summarise(prop = prop.table(table(RAW_OR_TREATED)))
 
+# GOOD
 Top10 %>%
   group_by(RAW_OR_TREATED) %>%
   tally()
-  
+
+Top10%>%
+  group_by(COUNTY) %>%
+  tally() %>%
+  mutate(proportion = n / sum(n)) %>%
+  arrange(desc(proportion))
 
 
 ```
