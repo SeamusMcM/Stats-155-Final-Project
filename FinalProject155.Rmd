@@ -12,13 +12,14 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(stringr)
+library(ggmap)
 ```
 
 # Loading the data
 ```{r}
 Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
 
-# Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
+Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 
 # Water_Data <- read_tsv('/Users/bengr/OneDrive/Documents/GitHub/Stats-155-Final-Project')
 
@@ -46,7 +47,8 @@ Top10 <- Water_Data_New %>%
   summarize(num_sites = n()) %>% 
   arrange(desc(num_sites)) %>% 
   head(10) %>% 
-  left_join(Water_Data_New)
+  left_join(Water_Data_New) %>% 
+  mutate(PFAS_YES=ifelse(TOTAL_TESTED_PFAS_PPT>0, TRUE, FALSE))
 ```
 
 
@@ -84,7 +86,7 @@ Top10%>%
 
 ```{r plots}
 
-# fix, only doing PFAS
+
 Top10 %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
@@ -94,33 +96,58 @@ Top10 %>%
   filter(!COUNTY == "KALAMAZOO") %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
-  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
+  labs(title="PFAS Levels in Kalamazoo, Michigan", y="PFAS in Tested Water (ppt)", x="County")
 
 Top10 %>% 
   filter(COUNTY == "KALAMAZOO") %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
-  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", subtitle="Exluding the County with the most PFAS, Kalamazoo", y="PFAS in Tested Water (ppt)", x="County")
 
 Top10 %>% 
-  mutate(PFAS_YES=ifelse(TOTAL_TESTED_PFAS_PPT>0, TRUE, FALSE)) %>% 
-  ggplot(aes(x=reorder(COUNTY, -PFAS_YES), fill=PFAS_YES)) +
+  ggplot(aes(x=reorder(COUNTY, PFAS_YES), fill=PFAS_YES)) +
   geom_bar(position='fill') +
-  labs(title="Presence of PFAS Contaminated Water in the Ten Most Tested Michigan Counties", fill="Presence of PFAS in Tested Water", x="County")
-
-
-Top10 %>% 
-  filter(COUNTY == "KALAMAZOO")
+  labs(title="Presence of PFAS Contaminated Water in the Ten Most Tested Michigan Counties", fill="Presence of PFAS in Tested Water", x="County") + 
+theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))  
 
 #Not sure if this is exactly what we're looking for, can adjust if needed.
+# I just filtered it to exlude water with no PFAS - Inbal
+# Ben, if x and y are logged (?), explain that maybe in the axes?
+
 Top10 %>%
+  filter(TOTAL_TESTED_PFAS_PPT>0) %>% 
   ggplot(aes(x = POPULATION_SERVED, y = TOTAL_TESTED_PFAS_PPT)) +
   geom_point() +
   scale_x_log10(labels = scales::comma_format()) +
   scale_y_log10() +
   labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served", y = "PFAS Levels")
 
+
 ```
+
+
+```{r}
+mod1 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY, data=Top10)
+summary(mod1)
+
+mod2 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED, data=Top10)
+summary(mod2)
+
+mod3 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + RAW_OR_TREATED, data=Top10)
+summary(mod3)
+
+main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
+summary(main_model)
+
+mod_pop <- lm(TOTAL_TESTED_PFAS_PPT ~ POPULATION_SERVED, data=Top10)
+summary(mod_pop)
+
+mod_type <- lm(TOTAL_TESTED_PFAS_PPT ~ RAW_OR_TREATED, data=Top10)
+summary(mod_type)
+```
+
+
+
 
 
 
