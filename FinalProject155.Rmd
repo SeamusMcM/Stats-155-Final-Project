@@ -116,18 +116,21 @@ Top10 %>%
   geom_point() +
   scale_x_log10(labels = scales::comma_format()) +
   scale_y_log10() +
-  labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served (log10)", y = "PFAS Levels (ppt, log10)")
+  labs(title = stringr::str_wrap("Population Drinking PFAS Contaminated Water in Ten Most Tested Michigan Counties", 50), x = "Log of Population Served", y = "Log of PFAS Levels (ppt)")
 
 #Below isn't completely working, and obv need to combine - will correct during class or this evening. Been super busy :(
+Top10$TOTAL_TESTED_PFAS_PPT <- as.numeric(Top10$TOTAL_TESTED_PFAS_PPT)
+
 AVERAGE_PFAS <- Top10 %>%
   group_by(COUNTY) %>%
-  summarize(AVERAGE_PFAS = mean(PFOA_PFOS_PPT, na.rm = TRUE))
-print(AVERAGE_PFAS)
+  summarize(AVERAGE_PFAS = mean(TOTAL_TESTED_PFAS_PPT, na.rm = TRUE))
 
 HIGHEST_PFAS <- Top10 %>%
   group_by(COUNTY) %>%
-  summarize(HIGHEST_PFAS = max(PFOA_PFOS_PPT, na.rm = TRUE))
-print(HIGHEST_PFAS)
+  summarize(HIGHEST_PFAS = max(TOTAL_TESTED_PFAS_PPT, na.rm = TRUE))
+
+AVG_MAX_TABLE <- merge(AVERAGE_PFAS, HIGHEST_PFAS, by = "COUNTY")
+print(AVG_MAX_TABLE)
 
 ```
 
