@@ -116,7 +116,7 @@ Top10 %>%
   geom_point() +
   scale_x_log10(labels = scales::comma_format()) +
   scale_y_log10() +
-  labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served (log10)", y = "PFAS Levels (ppt)")
+  labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served (log10)", y = "PFAS Levels (ppt, log10)")
 
 #Below isn't completely working, and obv need to combine - will correct during class or this evening. Been super busy :(
 AVERAGE_PFAS <- Top10 %>%
