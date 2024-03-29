@@ -86,7 +86,6 @@ Top10%>%
 
 ```{r plots}
 
-
 Top10 %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
@@ -96,13 +95,14 @@ Top10 %>%
   filter(!COUNTY == "KALAMAZOO") %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
-  labs(title="PFAS Levels in Kalamazoo, Michigan", y="PFAS in Tested Water (ppt)", x="County")
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", subtitle="Exluding the County with the most PFAS, Kalamazoo", y="PFAS in Tested Water (ppt)", x="County")
 
 Top10 %>% 
   filter(COUNTY == "KALAMAZOO") %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
-  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", subtitle="Exluding the County with the most PFAS, Kalamazoo", y="PFAS in Tested Water (ppt)", x="County")
+  labs(title="PFAS Levels in Kalamazoo, Michigan", y="PFAS in Tested Water (ppt)", x="County")
+
 
 Top10 %>% 
   ggplot(aes(x=reorder(COUNTY, PFAS_YES), fill=PFAS_YES)) +
@@ -132,7 +132,14 @@ print(HIGHEST_PFAS)
 ```
 
 
+
 ```{r}
+
+options(scipen = 100, digits = 4)
+main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
+summary(main_model)
+
+
 mod1 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY, data=Top10)
 summary(mod1)
 
@@ -142,15 +149,13 @@ summary(mod2)
 mod3 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + RAW_OR_TREATED, data=Top10)
 summary(mod3)
 
-main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
-summary(main_model)
-
 mod_pop <- lm(TOTAL_TESTED_PFAS_PPT ~ POPULATION_SERVED, data=Top10)
 summary(mod_pop)
 
 mod_type <- lm(TOTAL_TESTED_PFAS_PPT ~ RAW_OR_TREATED, data=Top10)
 summary(mod_type)
 ```
+
 
 
 
