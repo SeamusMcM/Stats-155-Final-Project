@@ -110,18 +110,24 @@ Top10 %>%
   labs(title="Presence of PFAS Contaminated Water in the Ten Most Tested Michigan Counties", fill="Presence of PFAS in Tested Water", x="County") + 
 theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))  
 
-#Not sure if this is exactly what we're looking for, can adjust if needed.
-# I just filtered it to exlude water with no PFAS - Inbal
-# Ben, if x and y are logged (?), explain that maybe in the axes?
-
 Top10 %>%
   filter(TOTAL_TESTED_PFAS_PPT>0) %>% 
   ggplot(aes(x = POPULATION_SERVED, y = TOTAL_TESTED_PFAS_PPT)) +
   geom_point() +
   scale_x_log10(labels = scales::comma_format()) +
   scale_y_log10() +
-  labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served", y = "PFAS Levels")
+  labs(title = "Population Drinking PFAS Contaminated Water in the Ten Most Tested Michigan Counties", x = "Population Served (log10)", y = "PFAS Levels (ppt)")
 
+#Below isn't completely working, and obv need to combine - will correct during class or this evening. Been super busy :(
+AVERAGE_PFAS <- Top10 %>%
+  group_by(COUNTY) %>%
+  summarize(AVERAGE_PFAS = mean(PFOA_PFOS_PPT, na.rm = TRUE))
+print(AVERAGE_PFAS)
+
+HIGHEST_PFAS <- Top10 %>%
+  group_by(COUNTY) %>%
+  summarize(HIGHEST_PFAS = max(PFOA_PFOS_PPT, na.rm = TRUE))
+print(HIGHEST_PFAS)
 
 ```
 
