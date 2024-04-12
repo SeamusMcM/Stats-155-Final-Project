@@ -3,6 +3,8 @@ title: "Stats 155 Final Project"
 author: "Inbal Armony"
 date: "2024-02-15"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -92,6 +94,14 @@ Top10 %>%
   labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County")
 
 Top10 %>% 
+  filter(TOTAL_TESTED_PFAS_PPT > 0) %>%
+  ggplot(aes(y=TOTAL_TESTED_PFAS_PPT)) +
+  geom_boxplot() +
+  labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County") +
+  facet_wrap(~COUNTY, scales = "free")
+
+
+Top10 %>% 
   filter(!COUNTY == "KALAMAZOO") %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
@@ -103,13 +113,14 @@ Top10 %>%
   geom_boxplot() +
   labs(title="PFAS Levels in Kalamazoo, Michigan", y="PFAS in Tested Water (ppt)", x="County")
 
-
 Top10 %>% 
   ggplot(aes(x=reorder(COUNTY, PFAS_YES), fill=PFAS_YES)) +
   geom_bar(position='fill') +
   labs(title="Presence of PFAS Contaminated Water in the Ten Most Tested Michigan Counties", fill="Presence of PFAS in Tested Water", x="County") + 
 theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))  
+```
 
+```{r}
 Top10 %>%
   filter(TOTAL_TESTED_PFAS_PPT>0) %>% 
   ggplot(aes(x = POPULATION_SERVED, y = TOTAL_TESTED_PFAS_PPT)) +
