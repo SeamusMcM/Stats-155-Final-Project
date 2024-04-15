@@ -152,7 +152,7 @@ print(AVG_MAX_TABLE)
 options(scipen = 100, digits = 4)
 main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
 summary(main_model)
-
+confint(main_model, level = 0.95)
 
 mod1 <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY, data=Top10)
 summary(mod1)
