@@ -145,10 +145,20 @@ print(AVG_MAX_TABLE)
 
 ```
 
+```{r}
+options(scipen = 100, digits = 4)
+small_model <- lm(TOTAL_TESTED_PFAS_PPT ~ POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
+main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
+anova(small_model, main_model)
+
+summary(main_model)
+confint(main_model, level = 0.95)
+```
+
 
 
 ```{r}
-
+# With no ref:
 options(scipen = 100, digits = 4)
 small_model <- lm(TOTAL_TESTED_PFAS_PPT ~ POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
 main_model <- lm(TOTAL_TESTED_PFAS_PPT ~ -1 + COUNTY + POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
