@@ -1,6 +1,6 @@
 ---
-title: "Stats 155 Final Project"
-author: "Inbal Armony"
+title: "Stats 155 Final Project R Code"
+author: "Inbal Armony, Ben Grijalva, Seamus McMurrer"
 date: "2024-02-15"
 output: html_document
 editor_options: 
@@ -13,22 +13,18 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(stringr)
-library(ggmap)
 ```
 
 # Loading the data
 ```{r}
-Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
-
-Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
-
+# Water_Data <- read_tsv('/Users/seamusmcmurrer/Library/CloudStorage/OneDrive-Personal/Documents/College/Year 3/Spring/Stats/Stats-155-Final-Project/37217-0001-Data.tsv')
+# Water_Data <- read_tsv('/Users/inbalarmony/Documents/GitHub/Stats-155-Final-Project/37217-0001-Data.tsv')
 # Water_Data <- read_tsv('/Users/bengr/OneDrive/Documents/GitHub/Stats-155-Final-Project')
 
-# Water_Data <- read_tsv('https://github.com/SeamusMcM/Stats-155-Final-Project/blob/e24710482babfe81c78ae92cb6dea75a6bde35dc/37217-0001-Data.tsv')
+Water_Data <- read_tsv('https://github.com/SeamusMcM/Stats-155-Final-Project/blob/e24710482babfe81c78ae92cb6dea75a6bde35dc/37217-0001-Data.tsv')
 ```
 
-# Exploring  + cleaning the data
+# Exploring  + Cleaning the data
 ```{r}
 head(Water_Data)
 
@@ -39,9 +35,8 @@ Water_Data_New <- Water_Data %>%
   mutate(TOTAL_TESTED_PFAS_PPT = str_replace(TOTAL_TESTED_PFAS_PPT, ",","")) %>%
   mutate(TOTAL_TESTED_PFAS_PPT = as.numeric(TOTAL_TESTED_PFAS_PPT)) 
   
-  
-Water_Data_New %>%  summarize(mean(TOTAL_TESTED_PFAS_PPT))
 
+Water_Data_New %>%  summarize(mean(TOTAL_TESTED_PFAS_PPT))
 
 # New data set with just the top 10 counties (based off of number of test sites) 
 Top10 <- Water_Data_New %>% 
@@ -54,8 +49,8 @@ Top10 <- Water_Data_New %>%
 ```
 
 
+# Numerical Summaries
 ```{r PFAS}
-#numerical summaries baby!
 Top10 %>%
   summarise(mean = mean(TOTAL_TESTED_PFAS_PPT),
             sd = sd(TOTAL_TESTED_PFAS_PPT),
@@ -66,12 +61,6 @@ Top10 %>%
             sd = sd(POPULATION_SERVED),
             median = median(POPULATION_SERVED),
             max = max(POPULATION_SERVED))
-# NOT GOOD
-Top10 %>%
-# one in oakland is "_" I think that 46% is raw and 53% is treated
-  summarise(prop = prop.table(table(RAW_OR_TREATED)))
-
-# GOOD
 Top10 %>%
   group_by(RAW_OR_TREATED) %>%
   tally()
@@ -81,13 +70,10 @@ Top10%>%
   tally() %>%
   mutate(proportion = n / sum(n)) %>%
   arrange(desc(proportion))
-
-
 ```
 
-
+# Plots
 ```{r plots}
-
 Top10 %>% 
   ggplot(aes(x=COUNTY, y=TOTAL_TESTED_PFAS_PPT)) +
   geom_boxplot() +
@@ -99,7 +85,6 @@ Top10 %>%
   geom_boxplot() +
   labs(title="PFAS Levels in Ten Most Tested Michigan Counties", y="PFAS in Tested Water (ppt)", x="County") +
   facet_wrap(~COUNTY, scales = "free")
-
 
 Top10 %>% 
   filter(!COUNTY == "KALAMAZOO") %>% 
@@ -120,6 +105,7 @@ Top10 %>%
 theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))  
 ```
 
+# More Plots
 ```{r}
 Top10 %>%
   filter(TOTAL_TESTED_PFAS_PPT>0) %>% 
@@ -129,7 +115,6 @@ Top10 %>%
   scale_y_log10() +
   labs(title = stringr::str_wrap("Population Drinking PFAS Contaminated Water in Ten Most Tested Michigan Counties", 50), x = "Log of Population Served", y = "Log of PFAS Levels (ppt)")
 
-#Below isn't completely working, and obv need to combine - will correct during class or this evening. Been super busy :(
 Top10$TOTAL_TESTED_PFAS_PPT <- as.numeric(Top10$TOTAL_TESTED_PFAS_PPT)
 
 AVERAGE_PFAS <- Top10 %>%
@@ -145,6 +130,7 @@ print(AVG_MAX_TABLE)
 
 ```
 
+# Model
 ```{r}
 options(scipen = 100, digits = 4)
 small_model <- lm(TOTAL_TESTED_PFAS_PPT ~ POPULATION_SERVED + RAW_OR_TREATED, data=Top10)
@@ -155,8 +141,7 @@ summary(main_model)
 confint(main_model, level = 0.95)
 ```
 
-
-
+# No Refernce Model
 ```{r}
 # With no ref:
 options(scipen = 100, digits = 4)
